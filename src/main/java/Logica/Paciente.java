@@ -17,7 +17,7 @@ public class Paciente extends Persona{
 
     //Relaciones con el resto de clases
     @OneToOne
-    @JoinColumn(name = "responsable_id_persona")
+    @JoinColumn(name = "id_responsable")
     private Responsable responsable;
 
     @OneToMany(mappedBy = "paciente")
