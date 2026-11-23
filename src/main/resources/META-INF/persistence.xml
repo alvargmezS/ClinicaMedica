@@ -15,6 +15,7 @@
         <class>Logica.Horario</class>
         <class>Logica.Usuario</class>
         <class>Logica.Cita</class>
+
         <properties>
           <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
           <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://192.168.10.100:3306/clinica_medica?serverTimezone=UTC"/>

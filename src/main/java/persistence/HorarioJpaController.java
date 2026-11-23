@@ -1,4 +1,4 @@
-package persistence;
+package Persistence;
 
 import Logica.Horario;
 import jakarta.persistence.*;
