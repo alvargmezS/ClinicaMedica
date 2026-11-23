@@ -5,6 +5,16 @@
              version="3.2">
     <persistence-unit name="clinicaMedica">
 
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>Logica.Persona</class>
+        <class>Logica.Medico</class>
+        <class>Logica.Paciente</class>
+        <class>Logica.Administrativo</class>
+        <class>Logica.Responsable</class>
+        <class>Logica.Horario</class>
+        <class>Logica.Usuario</class>
+        <class>Logica.Cita</class>
         <properties>
           <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
           <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://192.168.10.100:3306/clinica_medica?serverTimezone=UTC"/>
