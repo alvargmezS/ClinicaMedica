@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="ClinicaMedica" name="clinica" framework="JPA" ormUnit="ClinicaMedica:default" />
+      <persistence-unit moduleName="ClinicaMedica" name="clinicaMedica" framework="JPA" ormUnit="ClinicaMedica:clinicaMedica" defaultDataSourceId="6f60de49-1f93-402b-97ac-1fc2999b5717" />
+    </persistence-units>
+  </component>
+</project>

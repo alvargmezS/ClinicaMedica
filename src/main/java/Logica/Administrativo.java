@@ -1,30 +1,39 @@
 package Logica;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
+
 import java.util.Date;
 
+@Entity
 public class Administrativo extends Persona{
 
-    private int id_administrativo;
+    //private int id_administrativo;
     private String sector;
+    @OneToOne
     private Usuario usuarioAdministrativo;
 
     public Administrativo(int id_persona, String dni, String nombre, String apellido, String direccion,
-                          String telefono, Date fecha_nacimiento, int id_administrativo, Usuario usuarioAdministrativo,
+                          String telefono, Date fecha_nacimiento, Usuario usuarioAdministrativo,
                           String sector) {
 
         super(id_persona, dni, nombre, apellido, direccion, telefono, fecha_nacimiento);
-        this.id_administrativo = id_administrativo;
+        //this.id_administrativo = id_administrativo;
         this.usuarioAdministrativo = usuarioAdministrativo;
         this.sector = sector;
     }
 
-    public int getId_administrativo() {
+    public Administrativo() {
+
+    }
+
+    /*public int getId_administrativo() {
         return id_administrativo;
     }
 
     public void setId_administrativo(int id_administrativo) {
         this.id_administrativo = id_administrativo;
-    }
+    }*/
 
     public String getSector() {
         return sector;

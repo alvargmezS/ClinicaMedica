@@ -1,7 +1,15 @@
 package Logica;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Horario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_horario;
     private String hora_inicio;
     private String hora_fin;
@@ -10,6 +18,10 @@ public class Horario {
         this.id_horario = id_horario;
         this.hora_inicio = hora_inicio;
         this.hora_fin = hora_fin;
+    }
+
+    public Horario() {
+
     }
 
     public int getId_horario() {

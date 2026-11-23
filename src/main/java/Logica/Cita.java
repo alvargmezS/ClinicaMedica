@@ -1,19 +1,37 @@
 package Logica;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 
+@Entity
 public class Cita {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_cita;
+    @Temporal(TemporalType.DATE)
     private Date fecha_cita;
+
     private String hora_cita;
     private String motivo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_medico")
+    private Medico citaMedico;
+    @ManyToOne
+    @JoinColumn(name = "id_paciente")
+    private Paciente paciente;
 
     public Cita(int id_cita, Date fecha_cita, String hora_cita, String motivo) {
         this.id_cita = id_cita;
         this.fecha_cita = fecha_cita;
         this.hora_cita = hora_cita;
         this.motivo = motivo;
+    }
+
+    public Cita() {
+
     }
 
     public int getId_cita() {

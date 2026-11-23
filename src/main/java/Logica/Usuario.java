@@ -1,7 +1,15 @@
 package Logica;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_usuario;
     private String nombre_usuario;
     private String password;
@@ -12,6 +20,10 @@ public class Usuario {
         this.rol = rol;
         this.password = password;
         this.nombre_usuario = nombre_usuario;
+    }
+
+    public Usuario() {
+
     }
 
     public int getId_usuario() {
