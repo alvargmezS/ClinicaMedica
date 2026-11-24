@@ -1,14 +1,18 @@
 package Logica;
 
-import Persistence.PersistenceController;
+import persistence.PersistenceController;
 
 public class Controller {
 
     PersistenceController persistenceC = new PersistenceController();
 
-    public void crearUsuario(int id,String nombreUsuario, String pass, String rol){
+    public void crearUsuario(String nombreUsuario, String pass, String rol){
 
-        Usuario usuario = new Usuario(id,nombreUsuario,pass,rol);
+        Usuario usuario = new Usuario();
+        usuario.setNombre_usuario(nombreUsuario);
+        usuario.setPassword(pass);
+        usuario.setRol(rol);
+
         persistenceC.crearUsuario(usuario);
     }
 }

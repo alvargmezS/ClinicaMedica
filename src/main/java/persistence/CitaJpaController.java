@@ -1,4 +1,4 @@
-package Persistence;
+package persistence;
 
 import Logica.Cita;
 import jakarta.persistence.EntityManager;

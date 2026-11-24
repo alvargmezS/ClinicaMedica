@@ -1,4 +1,4 @@
-package Persistence;
+package persistence;
 
 import Logica.Persona;
 import jakarta.persistence.EntityManager;
