@@ -6,6 +6,8 @@ import persistence.PersonaJpaController;
 import persistence.ResponsableJpaController;
 import persistence.UsuarioJpaController;
 
+import java.util.List;
+
 public class PersistenceController {
 
     PersonaJpaController personaJPAC = new PersonaJpaController();
@@ -35,5 +37,9 @@ public class PersistenceController {
     public void crearUsuario(Usuario usuario) {
 
         usuarioJPAC.create(usuario);
+    }
+
+    public List<Usuario> getUsuario() {
+        return usuarioJPAC.findUsuarioEntities();
     }
 }

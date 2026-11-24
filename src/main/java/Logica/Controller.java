@@ -2,6 +2,8 @@ package Logica;
 
 import persistence.PersistenceController;
 
+import java.util.List;
+
 public class Controller {
 
     PersistenceController persistenceC = new PersistenceController();
@@ -14,5 +16,9 @@ public class Controller {
         usuario.setRol(rol);
 
         persistenceC.crearUsuario(usuario);
+    }
+
+    public List<Usuario> getUsuarios() {
+        return persistenceC.getUsuario();
     }
 }
