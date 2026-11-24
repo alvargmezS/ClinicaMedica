@@ -21,4 +21,14 @@ public class Controller {
     public List<Usuario> getUsuarios() {
         return persistenceC.getUsuario();
     }
+
+    public List<Medico> getMedicos() {
+        return persistenceC.getMedicos();
+    }
+
+    public void crearMedico() {
+
+        Medico medico = new Medico();
+
+    }
 }

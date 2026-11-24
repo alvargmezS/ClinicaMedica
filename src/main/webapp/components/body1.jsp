@@ -48,7 +48,7 @@
                 <div id="collapseMedico" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Acciónes</h6>
-                        <a class="collapse-item" href="">Ver Doctor/Doctora</a>
+                        <a class="collapse-item" href="SvMedicos">Ver Doctor/Doctora</a>
                         <a class="collapse-item" href="alta-medico.jsp">Alta Doctor/Doctora</a>
                     </div>
                 </div>

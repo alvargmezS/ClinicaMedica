@@ -1,5 +1,6 @@
 package persistence;
 
+import Logica.Medico;
 import Logica.Usuario;
 import persistence.AdministrativoJpaController;
 import persistence.PersonaJpaController;
@@ -41,5 +42,11 @@ public class PersistenceController {
 
     public List<Usuario> getUsuario() {
         return usuarioJPAC.findUsuarioEntities();
+    }
+
+
+    public List<Medico> getMedicos() {
+
+        return medicoJPAC.findMedicoEntities();
     }
 }
