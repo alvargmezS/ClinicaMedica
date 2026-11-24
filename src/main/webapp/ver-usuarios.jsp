@@ -50,18 +50,22 @@
                                             <td><%=usu.getNombre_usuario()%></td>
                                             <td><%=usu.getRol()%></td>
                                             <td style="display: flex; width: 230px;">
-                                                <form action="SvEditar" method="post">
+                                                <form action="SvEditarUsuario" method="get">
 
                                                     <button  type="submit" style="margin-right: 5px" class="btn btn-primary btn-user ">
                                                         <i class="fas fa-pencil-alt"></i>
-                                                        Editar </button>
+                                                        Editar
+                                                    </button>
+                                                    <input type="hidden" name="id" value="<%=usu.getId_usuario()%>">
                                                 </form>
 
-                                                <form action="SvEliminar" method="post">
+                                                <form action="SvEliminarUsuario" method="post">
 
                                                     <button  type="submit" style="background-color: red; margin-left: 5px" class="btn btn-primary btn-user">
                                                         <i class="fas fa-solid fa-trash"></i>
-                                                        Eliminar</button>
+                                                        Eliminar
+                                                    </button>
+                                                    <input type="hidden" name="id" value="<%=usu.getId_usuario()%>">
                                                 </form>
                                             </td>
 

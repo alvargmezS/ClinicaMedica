@@ -45,6 +45,6 @@ public class SvUsuario extends HttpServlet {
 
         usuario.crearUsuario(nombre, password, rol);
 
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("SvUsuario");
     }
 }
