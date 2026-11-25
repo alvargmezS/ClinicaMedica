@@ -19,7 +19,7 @@ public class Controller {
     }
 
     public List<Usuario> getUsuarios() {
-        return persistenceC.getUsuario();
+        return persistenceC.getUsuarios();
     }
 
     public List<Medico> getMedicos() {
@@ -30,5 +30,20 @@ public class Controller {
 
         Medico medico = new Medico();
 
+    }
+
+    public void deleteUsuario(int id) {
+
+        persistenceC.deleteUsuario(id);
+    }
+
+    public Usuario getUsuario(int id) {
+
+        return persistenceC.getUsuario(id);
+    }
+
+    public void editUsuario(Usuario usu) {
+
+        persistenceC.editUsuario(usu);
     }
 }

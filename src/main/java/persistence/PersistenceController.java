@@ -2,10 +2,7 @@ package persistence;
 
 import Logica.Medico;
 import Logica.Usuario;
-import persistence.AdministrativoJpaController;
-import persistence.PersonaJpaController;
-import persistence.ResponsableJpaController;
-import persistence.UsuarioJpaController;
+import perisistenceexception.NonexistentEntityException;
 
 import java.util.List;
 
@@ -40,7 +37,7 @@ public class PersistenceController {
         usuarioJPAC.create(usuario);
     }
 
-    public List<Usuario> getUsuario() {
+    public List<Usuario> getUsuarios() {
         return usuarioJPAC.findUsuarioEntities();
     }
 
@@ -48,5 +45,27 @@ public class PersistenceController {
     public List<Medico> getMedicos() {
 
         return medicoJPAC.findMedicoEntities();
+    }
+
+    public void deleteUsuario(int id) {
+
+        try {
+            usuarioJPAC.destroy(id);
+        } catch (NonexistentEntityException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Usuario getUsuario(int id) {
+        return usuarioJPAC.findUsuario(id);
+    }
+
+    public void editUsuario(Usuario usu) {
+        try {
+            usuarioJPAC.edit(usu);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
