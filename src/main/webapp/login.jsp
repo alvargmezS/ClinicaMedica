@@ -47,10 +47,10 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Login</h1>
                                     </div>
-                                    <form class="user" action="SvLogin" method="get">
+                                    <form class="user" action="SvLogin" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="usuario" name="usuario" aria-describedby="emailHelp"
+                                            <input  class="form-control form-control-user"
+                                                id="usuario" name="usuario"
                                                 placeholder="Usuario">
                                         </div>
                                         <div class="form-group">

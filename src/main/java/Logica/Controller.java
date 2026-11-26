@@ -2,6 +2,7 @@ package Logica;
 
 import persistence.PersistenceController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -46,4 +47,25 @@ public class Controller {
 
         persistenceC.editUsuario(usu);
     }
+
+    public boolean validIngreso(String usuario, String pass) {
+    List<Usuario> usuarios = persistenceC.getUsuarios();
+
+    if (usuarios == null || usuario == null || pass == null) {
+        return false;
+    }
+
+    for (Usuario u : usuarios) {
+        if (u.getNombre_usuario() != null && u.getNombre_usuario().equals(usuario)) {
+            if (u.getPassword() != null && u.getPassword().equals(pass)) {
+                return true; // Usuario y contraseña correctos, finaliza la búsqueda exitosamente
+            }
+            // Si el nombre coincide pero la contraseña no coincide, puedes salir directamente si los nombres son únicos
+            return false;
+        }
+    }
+
+    System.out.println("El usuario no existe");
+    return false;
+}
 }
