@@ -127,8 +127,9 @@
                             <th>Fecha Nacimiento</th>
                             <th>Seguro Médico</th>
                             <th>Grupo Sangre</th>
+                            <th>Tutor / Responsable</th>
                             <th style="white-space: nowrap;">Historial e Informes</th>
-                            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador")) { %>
+                            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador") || rol.equalsIgnoreCase("Administrativo") || rol.equalsIgnoreCase("Recepcionista") || rol.equalsIgnoreCase("Secretaria")) { %>
                             <th style="width: 1%; white-space: nowrap;">Acción</th>
                             <% } %>
                         </tr>
@@ -144,8 +145,9 @@
                             <th>Fecha Nacimiento</th>
                             <th>Seguro Médico</th>
                             <th>Grupo Sangre</th>
+                            <th>Tutor / Responsable</th>
                             <th style="white-space: nowrap;">Historial e Informes</th>
-                            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador")) { %>
+                            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador") || rol.equalsIgnoreCase("Administrativo") || rol.equalsIgnoreCase("Recepcionista") || rol.equalsIgnoreCase("Secretaria")) { %>
                             <th style="width: 1%; white-space: nowrap;">Acción</th>
                             <% } %>
                         </tr>
@@ -165,6 +167,48 @@
                             <td><%=p.getFecha_nacimiento() != null ? sdf.format(p.getFecha_nacimiento()) : "-"%></td>
                             <td><span class="badge badge-info"><%=SecurityUtils.escapeHtml(p.getSeguro_medico() != null ? p.getSeguro_medico() : "Sin seguro")%></span></td>
                             <td><span class="badge badge-danger"><%=SecurityUtils.escapeHtml(p.getGrupo_sangre() != null ? p.getGrupo_sangre() : "-")%></span></td>
+                            <td>
+                                <% 
+                                   boolean esMenor = false;
+                                   int edad = -1;
+                                   try {
+                                       esMenor = p.esMenorDeEdad();
+                                       edad = p.getEdad();
+                                   } catch (Exception ignored) {}
+
+                                   Logica.Responsable resp = null;
+                                   try {
+                                       resp = p.getResponsable();
+                                   } catch (Exception ignored) {}
+                                %>
+                                <% if (esMenor) { %>
+                                    <% if (resp != null) { %>
+                                        <span class="badge badge-warning text-dark font-weight-bold d-block mb-1">
+                                            <i class="fas fa-child mr-1"></i> Menor (<%=edad%> a.)
+                                        </span>
+                                        <small class="d-block text-gray-800">
+                                            <strong><%=SecurityUtils.escapeHtml(resp.getNombre() != null ? resp.getNombre() : "")%> <%=SecurityUtils.escapeHtml(resp.getApellido() != null ? resp.getApellido() : "")%></strong>
+                                        </small>
+                                        <small class="text-muted d-block">
+                                            (<%=SecurityUtils.escapeHtml(resp.getTipo_responsable() != null ? resp.getTipo_responsable() : "Tutor")%> - Tel: <%=SecurityUtils.escapeHtml(resp.getTelefono() != null ? resp.getTelefono() : "-")%>)
+                                        </small>
+                                    <% } else { %>
+                                        <span class="badge badge-danger d-block mb-1">
+                                            <i class="fas fa-exclamation-triangle mr-1"></i> Menor (<%=edad%> a.)
+                                        </span>
+                                        <small class="text-danger font-italic">Sin tutor asignado</small>
+                                    <% } %>
+                                <% } else { %>
+                                    <% if (resp != null) { %>
+                                        <small class="text-gray-800">
+                                            <%=SecurityUtils.escapeHtml(resp.getNombre() != null ? resp.getNombre() : "")%> <%=SecurityUtils.escapeHtml(resp.getApellido() != null ? resp.getApellido() : "")%>
+                                        </small>
+                                        <small class="text-muted d-block">(<%=SecurityUtils.escapeHtml(resp.getTipo_responsable() != null ? resp.getTipo_responsable() : "Responsable")%>)</small>
+                                    <% } else { %>
+                                        <span class="text-muted small"><%=edad >= 18 ? "Mayor de edad (" + edad + " a.)" : "Mayor de edad"%></span>
+                                    <% } %>
+                                <% } %>
+                            </td>
                             
                             <!-- Columna Historial e Informes Médicos -->
                             <td style="white-space: nowrap;">
@@ -178,8 +222,11 @@
                                 <% } %>
                             </td>
 
-                            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador")) { %>
+                            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador") || rol.equalsIgnoreCase("Administrativo") || rol.equalsIgnoreCase("Recepcionista") || rol.equalsIgnoreCase("Secretaria")) { %>
                             <td style="white-space: nowrap;">
+                                <a href="SvEditarPaciente?id=<%=p.getId_persona()%>" class="btn btn-sm btn-primary mr-1" title="Editar Paciente">
+                                    <i class="fas fa-edit mr-1"></i> Editar
+                                </a>
                                 <form action="SvEliminarPaciente" method="post" style="display:inline;">
                                     <input type="hidden" name="csrfToken" value="<%=csrfToken%>">
                                     <input type="hidden" name="id" value="<%=p.getId_persona()%>">
@@ -193,7 +240,7 @@
                     <%     }
                        } else { %>
                         <tr>
-                            <td colspan="11" class="text-center py-4 text-muted">
+                            <td colspan="12" class="text-center py-4 text-muted">
                                 <i class="fas fa-users-slash fa-2x mb-2 d-block text-gray-400"></i>
                                 <% if (busquedaActiva) { %>
                                     No se encontraron pacientes para la búsqueda <em>"<%=SecurityUtils.escapeHtml(busqPaciente)%>"</em>. <a href="ver-pacientes.jsp">Ver todos los pacientes</a>

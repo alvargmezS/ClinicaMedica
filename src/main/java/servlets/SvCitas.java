@@ -4,6 +4,7 @@ import Logica.Cita;
 import Logica.Controller;
 import Logica.Medico;
 import Logica.Paciente;
+import Logica.Responsable;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -60,7 +61,33 @@ public class SvCitas extends HttpServlet {
                     throw new IllegalArgumentException("Debes seleccionar un paciente existente o ingresar los datos del nuevo paciente (Nombre y DNI).");
                 }
 
-                Paciente nuevoPac = controller.crearPaciente(dniPac, nombrePac, apellidoPac, telPac, "", new Date(), "Particular", "Sin especificar");
+                String pacFechaNacStr = request.getParameter("pac_fecha_nac");
+                String pacSeguro = request.getParameter("pac_seguro");
+                if (pacSeguro == null || pacSeguro.trim().isEmpty()) {
+                    pacSeguro = "Particular";
+                }
+                Date pacFechaNac = null;
+                if (pacFechaNacStr != null && !pacFechaNacStr.trim().isEmpty()) {
+                    try {
+                        pacFechaNac = new SimpleDateFormat("yyyy-MM-dd").parse(pacFechaNacStr.trim());
+                    } catch (Exception ignored) {}
+                }
+
+                // Tutor legal si se especificó
+                String respNom = request.getParameter("resp_nombre");
+                String respDni = request.getParameter("resp_dni");
+                String respTel = request.getParameter("resp_telefono");
+
+                Responsable resp = null;
+                if (respNom != null && !respNom.trim().isEmpty()) {
+                    resp = new Responsable();
+                    resp.setNombre(respNom.trim());
+                    resp.setDni(respDni != null ? respDni.trim() : "");
+                    resp.setTelefono(respTel != null ? respTel.trim() : "");
+                    resp.setTipo_responsable("Padre/Madre/Tutor");
+                }
+
+                Paciente nuevoPac = controller.crearPacienteConResponsable(dniPac, nombrePac, apellidoPac, telPac, "", pacFechaNac, pacSeguro, "Sin especificar", resp);
                 idPaciente = nuevoPac.getId_persona();
             } else {
                 idPaciente = Integer.parseInt(idPacienteStr);

@@ -16,7 +16,7 @@ public class Paciente extends Persona{
     private String grupo_sangre;
 
     //Relaciones con el resto de clases
-    @OneToOne
+    @OneToOne(cascade = {jakarta.persistence.CascadeType.PERSIST, jakarta.persistence.CascadeType.MERGE})
     @JoinColumn(name = "id_responsable")
     private Responsable responsable;
 

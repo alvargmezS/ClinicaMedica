@@ -2,6 +2,7 @@ package servlets;
 
 import Logica.Controller;
 import Logica.Paciente;
+import Logica.Responsable;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,6 +37,8 @@ public class SvPacientes extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession sesion = request.getSession();
+
         String dni = request.getParameter("dni");
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
@@ -54,8 +57,28 @@ public class SvPacientes extends HttpServlet {
             e.printStackTrace();
         }
 
-        controller.crearPaciente(dni, nombre, apellido, telefono, direccion, fechaNac, seguro, grupoSangre);
+        // Datos del responsable (para menores de edad o a petición)
+        String respDni = request.getParameter("resp_dni");
+        String respNombre = request.getParameter("resp_nombre");
+        String respApellido = request.getParameter("resp_apellido");
+        String respTelefono = request.getParameter("resp_telefono");
+        String respDireccion = request.getParameter("resp_direccion");
+        String respTipo = request.getParameter("resp_tipo");
 
+        Responsable responsable = null;
+        if (respNombre != null && !respNombre.trim().isEmpty() && respDni != null && !respDni.trim().isEmpty()) {
+            responsable = new Responsable();
+            responsable.setDni(respDni.trim());
+            responsable.setNombre(respNombre.trim());
+            responsable.setApellido(respApellido != null ? respApellido.trim() : "");
+            responsable.setTelefono(respTelefono != null ? respTelefono.trim() : "");
+            responsable.setDireccion(respDireccion != null ? respDireccion.trim() : "");
+            responsable.setTipo_responsable(respTipo != null && !respTipo.trim().isEmpty() ? respTipo.trim() : "Padre/Madre/Tutor");
+        }
+
+        controller.crearPacienteConResponsable(dni, nombre, apellido, telefono, direccion, fechaNac, seguro, grupoSangre, responsable);
+
+        sesion.setAttribute("mensajeExito", "Paciente registrado exitosamente" + (responsable != null ? " con tutor legal/responsable asociado." : "."));
         response.sendRedirect("SvPacientes");
     }
 }

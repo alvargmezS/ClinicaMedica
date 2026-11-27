@@ -266,7 +266,32 @@ public class Controller {
         return false;
     }
 
+    public synchronized void asegurarUsuarioAdminPorDefecto() {
+        try {
+            List<Usuario> usuarios = persistenceC.getUsuarios();
+            if (usuarios == null || usuarios.isEmpty()) {
+                System.out.println("[INICIALIZACION] Creando usuario administrador por defecto (admin / admin)...");
+                crearUsuario("admin", "admin", "Administrador");
+            } else {
+                boolean existeAdmin = false;
+                for (Usuario u : usuarios) {
+                    if ("admin".equalsIgnoreCase(u.getNombre_usuario())) {
+                        existeAdmin = true;
+                        break;
+                    }
+                }
+                if (!existeAdmin) {
+                    System.out.println("[INICIALIZACION] No se encontró usuario admin. Creando admin / admin...");
+                    crearUsuario("admin", "admin", "Administrador");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[INICIALIZACION] Error al asegurar usuario admin por defecto: " + e.getMessage());
+        }
+    }
+
     public Usuario obtenerUsuario(String usuario, String pass) {
+        asegurarUsuarioAdminPorDefecto();
         List<Usuario> usuarios = persistenceC.getUsuarios();
 
         if (usuarios == null || usuario == null || pass == null) {
@@ -330,6 +355,10 @@ public class Controller {
     }
 
     public Paciente crearPaciente(String dni, String nombre, String apellido, String telefono, String direccion, Date fechaNac, String seguro, String grupoSangre) {
+        return crearPacienteConResponsable(dni, nombre, apellido, telefono, direccion, fechaNac, seguro, grupoSangre, null);
+    }
+
+    public Paciente crearPacienteConResponsable(String dni, String nombre, String apellido, String telefono, String direccion, Date fechaNac, String seguro, String grupoSangre, Responsable responsable) {
         Paciente pac = new Paciente();
         pac.setDni(dni);
         pac.setNombre(nombre);
@@ -339,8 +368,67 @@ public class Controller {
         pac.setFecha_nacimiento(fechaNac);
         pac.setSeguro_medico(seguro);
         pac.setGrupo_sangre(grupoSangre);
+
+        if (responsable != null) {
+            pac.setResponsable(responsable);
+        }
+
         persistenceC.crearPaciente(pac);
         return pac;
+    }
+
+    public void editPaciente(Paciente paciente) {
+        persistenceC.editPaciente(paciente);
+    }
+
+    public void editPaciente(int idPaciente, String dni, String nombre, String apellido, String telefono, String direccion, Date fechaNac, String seguro, String grupoSangre, Responsable responsable) {
+        Paciente pac = persistenceC.getPaciente(idPaciente);
+        if (pac == null) {
+            throw new IllegalArgumentException("El paciente a modificar no existe.");
+        }
+
+        pac.setDni(dni);
+        pac.setNombre(nombre);
+        pac.setApellido(apellido);
+        pac.setTelefono(telefono);
+        pac.setDireccion(direccion);
+        pac.setFecha_nacimiento(fechaNac);
+        pac.setSeguro_medico(seguro);
+        pac.setGrupo_sangre(grupoSangre);
+
+        if (responsable != null) {
+            if (pac.getResponsable() != null) {
+                Responsable rExistente = pac.getResponsable();
+                rExistente.setNombre(responsable.getNombre());
+                rExistente.setApellido(responsable.getApellido());
+                rExistente.setDni(responsable.getDni());
+                rExistente.setTelefono(responsable.getTelefono());
+                rExistente.setDireccion(responsable.getDireccion());
+                rExistente.setTipo_responsable(responsable.getTipo_responsable());
+                persistenceC.editResponsable(rExistente);
+            } else {
+                persistenceC.crearResponsable(responsable);
+                pac.setResponsable(responsable);
+            }
+        }
+
+        persistenceC.editPaciente(pac);
+    }
+
+    public List<Responsable> getResponsables() {
+        return persistenceC.getResponsables();
+    }
+
+    public Responsable getResponsable(int id) {
+        return persistenceC.getResponsable(id);
+    }
+
+    public void crearResponsable(Responsable resp) {
+        persistenceC.crearResponsable(resp);
+    }
+
+    public void editResponsable(Responsable resp) {
+        persistenceC.editResponsable(resp);
     }
 
     // --- Métodos de Gestión de Administrativos ---

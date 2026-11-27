@@ -33,7 +33,7 @@
 * **Control de Franja Horaria**: Las citas solo pueden asignarse estrictamente dentro del horario laboral configurado para cada facultativo.
 
 ### 👥 3. Gestión de Pacientes, Médicos y Personal Administrativo
-* **Pacientes**: Alta, edición, filtrado predictivo y eliminación segura con comprobación de integridad referencial.
+* **Pacientes**: Alta, gestión clínica, filtrado predictivo y asignación de tutor legal / responsable para pacientes menores de edad (< 18 años).
 * **Médicos**: Alta vinculada a usuarios del sistema y configuración de horarios de atención (hora de inicio y fin). Edición y baja protegidas por rol administrador.
 * **Administrativos**: Gestión de personal de recepción y secretaría médica con asignación de sectores funcionales.
 * **Usuarios y Roles**: Control de credenciales de acceso con tres roles diferenciados (`ADMINISTRADOR`, `MEDICO`, `RECEPCIONISTA`).

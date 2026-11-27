@@ -6,6 +6,7 @@ import Logica.Horario;
 import Logica.InformeMedico;
 import Logica.Medico;
 import Logica.Paciente;
+import Logica.Responsable;
 import Logica.Usuario;
 import jakarta.persistence.EntityManagerFactory;
 import perisistenceexception.NonexistentEntityException;
@@ -230,7 +231,32 @@ public class PersistenceController {
     }
 
     public void crearPaciente(Paciente paciente) {
+        if (paciente.getResponsable() != null) {
+            if (paciente.getResponsable().getId_persona() == 0) {
+                responsableJPAC.create(paciente.getResponsable());
+            }
+        }
         pacienteJPAC.create(paciente);
+    }
+
+    public List<Responsable> getResponsables() {
+        return responsableJPAC.findResponsableEntities();
+    }
+
+    public Responsable getResponsable(int id) {
+        return responsableJPAC.findResponsable(id);
+    }
+
+    public void crearResponsable(Responsable resp) {
+        responsableJPAC.create(resp);
+    }
+
+    public void editResponsable(Responsable resp) {
+        try {
+            responsableJPAC.edit(resp);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void eliminarPaciente(int id) {

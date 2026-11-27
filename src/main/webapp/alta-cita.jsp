@@ -202,7 +202,7 @@
                                                boolean autoSelectPac = (listaPacientes.size() == 1);
                                     %>
                                         <option value="<%=pac.getId_persona()%>" <%=autoSelectPac ? "selected" : ""%>>
-                                            <%=pac.getNombre()%> <%=pac.getApellido()%> (DNI: <%=pac.getDni()%>) [Seguro: <%=pac.getSeguro_medico() != null ? pac.getSeguro_medico() : "Particular"%>]
+                                            <%=pac.getNombre()%> <%=pac.getApellido()%> (DNI: <%=pac.getDni()%>) [Seguro: <%=pac.getSeguro_medico() != null ? pac.getSeguro_medico() : "Particular"%>]<%=pac.esMenorDeEdad() ? " [MENOR DE EDAD" + (pac.getResponsable() != null ? " - Tutor: " + pac.getResponsable().getNombre() + " " + pac.getResponsable().getApellido() : " - Sin Tutor") + "]" : ""%>
                                         </option>
                                     <%     }
                                        } %>
@@ -225,12 +225,38 @@
                                             <input type="text" class="form-control" name="pac_apellido" id="pac_apellido" placeholder="Apellidos" style="border-radius: 10rem;">
                                         </div>
                                     </div>
-                                    <div class="form-group row mb-0">
+                                    <div class="form-group row mb-2">
                                         <div class="col-sm-6 mb-2">
                                             <input type="text" class="form-control" name="pac_dni" id="pac_dni" placeholder="DNI del paciente" style="border-radius: 10rem;">
                                         </div>
                                         <div class="col-sm-6">
                                             <input type="tel" class="form-control" name="pac_telefono" id="pac_telefono" placeholder="Teléfono" style="border-radius: 10rem;">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-2">
+                                        <div class="col-sm-6 mb-2">
+                                            <label class="small text-muted mb-0 ml-2">Fecha Nacimiento (calcula minoría de edad):</label>
+                                            <input type="date" class="form-control" name="pac_fecha_nac" style="border-radius: 10rem;">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="small text-muted mb-0 ml-2">Seguro Médico:</label>
+                                            <input type="text" class="form-control" name="pac_seguro" placeholder="Ej: Sanitas / Particular" style="border-radius: 10rem;">
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-2 rounded border mb-1">
+                                        <small class="font-weight-bold text-warning d-block mb-1">
+                                            <i class="fas fa-user-shield mr-1"></i> Si el paciente es menor de edad, indica su tutor legal:
+                                        </small>
+                                        <div class="form-row">
+                                            <div class="col-md-4 mb-1">
+                                                <input type="text" class="form-control form-control-sm" name="resp_nombre" placeholder="Nombre y Apellidos Tutor">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <input type="text" class="form-control form-control-sm" name="resp_dni" placeholder="DNI del Tutor">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <input type="tel" class="form-control form-control-sm" name="resp_telefono" placeholder="Teléfono Tutor">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

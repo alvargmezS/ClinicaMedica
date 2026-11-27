@@ -3,6 +3,7 @@
 </style>
 <%@ page import="java.util.List" %>
 <%@ page import="Logica.Paciente" %>
+<%@ page import="Logica.SecurityUtils" %>
 <%@ page import="Logica.InformeMedico" %>
 <%@ page import="Logica.Cita" %>
 <%@ page import="Logica.Medico" %>
@@ -50,6 +51,11 @@
             <% if (puedeEscribir) { %>
             <a href="#formNuevoInforme" class="btn btn-success shadow-sm mr-2">
                 <i class="fas fa-plus-circle fa-sm mr-1"></i> Nuevo Informe Médico
+            </a>
+            <% } %>
+            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador") || rol.equalsIgnoreCase("Administrativo") || rol.equalsIgnoreCase("Recepcionista") || rol.equalsIgnoreCase("Secretaria")) { %>
+            <a href="SvEditarPaciente?id=<%=pac.getId_persona()%>" class="btn btn-outline-primary shadow-sm mr-2">
+                <i class="fas fa-edit fa-sm mr-1"></i> Editar Paciente
             </a>
             <% } %>
             <a href="SvPacientes" class="btn btn-secondary shadow-sm">
@@ -107,6 +113,44 @@
                     <span class="badge badge-success"><%=informes != null ? informes.size() : 0%></span>
                 </div>
             </div>
+            <% 
+               boolean pacEsMenor = false;
+               int pacEdad = -1;
+               try {
+                   pacEsMenor = pac.esMenorDeEdad();
+                   pacEdad = pac.getEdad();
+               } catch (Exception ignored) {}
+
+               Logica.Responsable pacResp = null;
+               try {
+                   pacResp = pac.getResponsable();
+               } catch (Exception ignored) {}
+            %>
+            <% if (pacEsMenor || pacResp != null) { %>
+            <div class="row pt-3 mt-2 border-top bg-light rounded p-2 mx-0 align-items-center">
+                <div class="col-md-12 mb-1">
+                    <span class="badge <%=pacEsMenor ? "badge-warning text-dark" : "badge-secondary"%> font-weight-bold mr-2">
+                        <i class="fas <%=pacEsMenor ? "fa-child" : "fa-user-shield"%> mr-1"></i>
+                        <%=pacEsMenor ? "Paciente Menor de Edad (" + pacEdad + " años)" : "Tutor / Responsable Asociado"%>
+                    </span>
+                    <% if (pacResp != null) { %>
+                        <span class="text-gray-900 font-weight-bold">
+                            Tutor Legal: <%=SecurityUtils.escapeHtml(pacResp.getNombre() != null ? pacResp.getNombre() : "")%> <%=SecurityUtils.escapeHtml(pacResp.getApellido() != null ? pacResp.getApellido() : "")%>
+                        </span>
+                        <span class="text-muted small ml-2">
+                            (Parentesco: <strong><%=SecurityUtils.escapeHtml(pacResp.getTipo_responsable() != null ? pacResp.getTipo_responsable() : "Tutor")%></strong> | 
+                            DNI: <strong><%=SecurityUtils.escapeHtml(pacResp.getDni() != null ? pacResp.getDni() : "-")%></strong> | 
+                            Tel: <strong><%=SecurityUtils.escapeHtml(pacResp.getTelefono() != null ? pacResp.getTelefono() : "-")%></strong> | 
+                            Dir: <%=SecurityUtils.escapeHtml(pacResp.getDireccion() != null && !pacResp.getDireccion().isEmpty() ? pacResp.getDireccion() : (pac.getDireccion() != null ? pac.getDireccion() : "-"))%>)
+                        </span>
+                    <% } else { %>
+                        <span class="text-danger small font-weight-bold">
+                            <i class="fas fa-exclamation-triangle mr-1"></i> Atención: Este paciente es menor de edad y actualmente no tiene tutor legal asignado.
+                        </span>
+                    <% } %>
+                </div>
+            </div>
+            <% } %>
         </div>
     </div>
 

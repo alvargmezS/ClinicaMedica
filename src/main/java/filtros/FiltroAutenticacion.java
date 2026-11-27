@@ -95,6 +95,15 @@ public class FiltroAutenticacion implements Filter {
             }
         }
 
+        // Edición de Pacientes: Admin y Administrativo/Recepcionista
+        if (rutaRelativa.equals("/editar-paciente.jsp")
+                || rutaRelativa.equals("/SvEditarPaciente")) {
+            if (!esAdmin(rol) && !esAdministrativo(rol)) {
+                response.sendRedirect(contextPath + "/sin-permiso.jsp");
+                return;
+            }
+        }
+
         // C) Gestión de Administrativos (Alta, Edición y Eliminación): SOLO Admin
         if (esRutaGestionAdministrativos(rutaRelativa)) {
             if (!esAdmin(rol)) {

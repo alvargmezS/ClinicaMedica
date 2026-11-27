@@ -89,4 +89,24 @@ public class Persona {
     public void setFecha_nacimiento(Date fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
+
+    public int getEdad() {
+        if (this.fecha_nacimiento == null) {
+            return -1;
+        }
+        java.util.Calendar fn = java.util.Calendar.getInstance();
+        fn.setTime(this.fecha_nacimiento);
+        java.util.Calendar hoy = java.util.Calendar.getInstance();
+
+        int edad = hoy.get(java.util.Calendar.YEAR) - fn.get(java.util.Calendar.YEAR);
+        if (hoy.get(java.util.Calendar.DAY_OF_YEAR) < fn.get(java.util.Calendar.DAY_OF_YEAR)) {
+            edad--;
+        }
+        return edad;
+    }
+
+    public boolean esMenorDeEdad() {
+        int edad = getEdad();
+        return edad >= 0 && edad < 18;
+    }
 }
