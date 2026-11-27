@@ -63,6 +63,9 @@
             <a href="SvInformes" class="btn btn-outline-info shadow-sm mr-2">
                 <i class="fas fa-list fa-sm mr-1"></i> Todos los Informes
             </a>
+            <a href="SvDescargarInformePdf?id=<%=informe.getId_informe()%>" class="btn btn-danger shadow-sm mr-2" title="Descargar informe oficial en PDF">
+                <i class="fas fa-file-pdf fa-sm mr-1"></i> Descargar PDF
+            </a>
             <a href="#" class="btn btn-primary shadow-sm" title="Usa Ctrl+P o Cmd+P para imprimir">
                 <i class="fas fa-print fa-sm mr-1"></i> Imprimir Informe
             </a>

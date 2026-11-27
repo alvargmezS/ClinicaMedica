@@ -1,3 +1,6 @@
+<style>
+.texto-prewrap { white-space: pre-wrap; }
+</style>
 <%@ page import="java.util.List" %>
 <%@ page import="Logica.Paciente" %>
 <%@ page import="Logica.InformeMedico" %>
@@ -136,6 +139,9 @@
                                     <a href="SvVerInforme?id=<%=inf.getId_informe()%>" class="btn btn-sm btn-outline-primary" target="_blank" title="Ver formato completo para imprimir">
                                         <i class="fas fa-print mr-1"></i> Ver / Imprimir
                                     </a>
+                                    <a href="SvDescargarInformePdf?id=<%=inf.getId_informe()%>" class="btn btn-sm btn-outline-danger ml-1" title="Descargar informe en PDF">
+                                        <i class="fas fa-file-pdf mr-1"></i> PDF
+                                    </a>
                                 </div>
                             </div>
                             
@@ -154,7 +160,7 @@
                                         <span class="text-danger font-weight-bold small d-block">
                                             <i class="fas fa-stethoscope mr-1"></i> Diagnóstico:
                                         </span>
-                                        <p class="mb-0 text-gray-900" style="white-space: pre-wrap;"><%=inf.getDiagnostico() != null && !inf.getDiagnostico().isEmpty() ? inf.getDiagnostico() : "Sin diagnóstico registrado."%></p>
+                                        <p class="mb-0 text-gray-900" class="texto-prewrap"><%=inf.getDiagnostico() != null && !inf.getDiagnostico().isEmpty() ? inf.getDiagnostico() : "Sin diagnóstico registrado."%></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-2">
@@ -162,7 +168,7 @@
                                         <span class="text-info font-weight-bold small d-block">
                                             <i class="fas fa-pills mr-1"></i> Tratamiento y Medicación Prescrita:
                                         </span>
-                                        <p class="mb-0 text-gray-900" style="white-space: pre-wrap;"><%=inf.getTratamiento() != null && !inf.getTratamiento().isEmpty() ? inf.getTratamiento() : "Sin tratamiento prescrito."%></p>
+                                        <p class="mb-0 text-gray-900" class="texto-prewrap"><%=inf.getTratamiento() != null && !inf.getTratamiento().isEmpty() ? inf.getTratamiento() : "Sin tratamiento prescrito."%></p>
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +176,7 @@
                             <% if (inf.getObservaciones() != null && !inf.getObservaciones().trim().isEmpty()) { %>
                             <div class="mt-2 pt-2 border-top">
                                 <span class="text-muted font-weight-bold small d-block">Observaciones Adicionales / Evolución:</span>
-                                <small class="text-gray-700" style="white-space: pre-wrap;"><%=inf.getObservaciones()%></small>
+                                <small class="text-gray-700" class="texto-prewrap"><%=inf.getObservaciones()%></small>
                             </div>
                             <% } %>
                         </div>

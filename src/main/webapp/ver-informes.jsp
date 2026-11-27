@@ -110,6 +110,9 @@
                                 <a href="SvVerInforme?id=<%=inf.getId_informe()%>" class="btn btn-sm btn-outline-primary mr-1" title="Ver e Imprimir">
                                     <i class="fas fa-print mr-1"></i> Ver
                                 </a>
+                                <a href="SvDescargarInformePdf?id=<%=inf.getId_informe()%>" class="btn btn-sm btn-outline-danger mr-1" title="Descargar en PDF">
+                                    <i class="fas fa-file-pdf mr-1"></i> PDF
+                                </a>
                                 <% if (p != null) { %>
                                 <a href="SvHistorialPaciente?id=<%=p.getId_persona()%>" class="btn btn-sm btn-info" title="Ver Historial Clínico">
                                     <i class="fas fa-file-medical-alt mr-1"></i> Historial
