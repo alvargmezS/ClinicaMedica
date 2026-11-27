@@ -47,7 +47,9 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Login</h1>
                                     </div>
-                                    <form class="user" action="SvLogin" method="get">
+                                    <form class="user" action="SvLogin" method="post">
+
+                                        <p class="form-group" style="color: red">Introduce un Usuario y Contraseña válidos</p>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
                                                 id="usuario" name="usuario" aria-describedby="emailHelp"

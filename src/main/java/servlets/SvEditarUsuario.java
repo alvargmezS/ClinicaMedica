@@ -1,9 +1,9 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import Logica.Controller;
+import Logica.PasswordUtils;
 import Logica.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,7 +26,7 @@ public class SvEditarUsuario extends HttpServlet {
         Usuario usu = controller.getUsuario(id);
 
         HttpSession sesion = request.getSession();
-        sesion.setAttribute("usuario", usu);
+        sesion.setAttribute("usuarioEditar", usu);
 
         response.sendRedirect("editar-usuario.jsp");
 
@@ -40,13 +40,22 @@ public class SvEditarUsuario extends HttpServlet {
         String nombre = request.getParameter("nombre");
         String rol = request.getParameter("rol");
 
-        Usuario usu = (Usuario) request.getSession().getAttribute("usuario");
+        Usuario usu = (Usuario) request.getSession().getAttribute("usuarioEditar");
 
-        usu.setNombre_usuario(nombre);
-        usu.setPassword(pass);
-        usu.setRol(rol);
+        if (usu != null) {
+            usu.setNombre_usuario(nombre);
+            usu.setRol(rol);
 
-        controller.editUsuario(usu);
+            // Solo si se ingresó una nueva contraseña, se hashea y actualiza. Si se deja vacía, se mantiene la actual.
+            if (pass != null && !pass.trim().isEmpty()) {
+                usu.setPassword(PasswordUtils.hashPassword(pass));
+            }
+
+            controller.editUsuario(usu);
+
+            // Limpiamos el atributo temporal de sesión
+            request.getSession().removeAttribute("usuarioEditar");
+        }
 
         response.sendRedirect("SvUsuario");
 

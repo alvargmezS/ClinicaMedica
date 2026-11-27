@@ -19,41 +19,72 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo Médico </h1>
+                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo Médico</h1>
                             </div>
-                            <form class="user">
+                            <form action="SvMedicos" method="POST" class="user">
+                                <!-- Datos Personales -->
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="nombre" name="nombre"
-                                            placeholder="Nombre">
+                                        <input type="text" class="form-control form-control-user" name="nombre" placeholder="Nombre" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="apellido" name="apellido"
-                                            placeholder="Apellidos">
+                                        <input type="text" class="form-control form-control-user" name="apellido" placeholder="Apellidos" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="dni" name="dni"
-                                            placeholder="DNI">
+                                        <input type="text" class="form-control form-control-user" name="dni" placeholder="DNI" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="phone" name="phone"
-                                            placeholder="teléfono">
+                                        <input type="tel" class="form-control form-control-user" name="telefono" placeholder="Teléfono">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="especialidad" name="especialidad"
-                                            placeholder="Especialidad">
+                                        <input type="text" class="form-control form-control-user" name="direccion" placeholder="Dirección">
                                     </div>
-
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control form-control-user" name="fecha_nac" placeholder="Fecha de Nacimiento" required>
+                                    </div>
                                 </div>
 
-                                <a href="" class="btn btn-primary btn-user btn-block">
-                                    Registrar
-                                </a>
+                                <!-- Especialidad -->
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control form-control-user" name="especialidad" placeholder="Especialidad (ej: Cardiología)" required>
+                                    </div>
+                                </div>
 
+                                <!-- Horarios -->
+                                <hr>
+                                <h6 class="text-gray-900 font-weight-bold">Horario de Atención:</h6>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label class="small text-gray-600 ml-2">Hora de Inicio:</label>
+                                        <input type="time" class="form-control form-control-user" name="hora_inicio" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="small text-gray-600 ml-2">Hora de Fin:</label>
+                                        <input type="time" class="form-control form-control-user" name="hora_fin" required>
+                                    </div>
+                                </div>
+
+                                <!-- Credenciales de Usuario -->
+                                <hr>
+                                <h6 class="text-gray-900 font-weight-bold">Datos de Acceso al Sistema:</h6>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" name="usuario" placeholder="Nombre de usuario" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control form-control-user" name="pass" placeholder="Contraseña" required>
+                                    </div>
+                                </div>
+
+                                <!-- Botón de Envío -->
+                                <button type="submit" class="btn btn-primary btn-user btn-block mt-4">
+                                    Registrar Médico
+                                </button>
                             </form>
 
                         </div>

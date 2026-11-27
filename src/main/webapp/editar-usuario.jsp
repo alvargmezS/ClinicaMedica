@@ -10,7 +10,11 @@
 <%@ include file="components/body1.jsp"%>
 
 <%
-    Usuario usu = (Usuario) request.getSession().getAttribute("usuario");
+    Usuario usu = (Usuario) request.getSession().getAttribute("usuarioEditar");
+    if (usu == null) {
+        response.sendRedirect("SvUsuario");
+        return;
+    }
 %>
 <div class="container">
 
@@ -28,17 +32,17 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user" id="nombre" name="nombre"
-                                            value="<%=usu.getNombre_usuario()%>">
+                                            value="<%=usu.getNombre_usuario() != null ? usu.getNombre_usuario() : ""%>" placeholder="Nombre de usuario" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user" id="pass" name="pass"
-                                            value="<%=usu.getPassword()%>">
+                                            placeholder="Nueva contraseña (dejar en blanco para mantener la actual)">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user" id="rol" name="rol"
-                                            value="<%=usu.getRol()%>">
+                                            value="<%=usu.getRol() != null ? usu.getRol() : ""%>" placeholder="Rol" required>
                                     </div>
 
                                 </div>

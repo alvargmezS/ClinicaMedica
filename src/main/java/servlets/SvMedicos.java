@@ -1,8 +1,10 @@
 package servlets;
 
 import java.io.IOException;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import Logica.Controller;
@@ -18,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "SvMedicos", value = "/SvMedicos")
 public class SvMedicos extends HttpServlet {
 
-    Controller medico =  new Controller();
+    Controller medico = new Controller();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -30,8 +32,6 @@ public class SvMedicos extends HttpServlet {
         HttpSession sesion = request.getSession();
         sesion.setAttribute("listaMedicos", med);
 
-        //System.out.println("Usuario " + usu.get(0).getNombre_usuario());
-
         response.sendRedirect("ver-medicos.jsp");
     }
 
@@ -39,9 +39,35 @@ public class SvMedicos extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String dni = request.getParameter("dni");
+        String telefono = request.getParameter("telefono");
+        String direccion = request.getParameter("direccion");
+        String especialidad = request.getParameter("especialidad");
+        String fechaNacStr = request.getParameter("fecha_nac");
 
-        medico.crearMedico();
+        // Horarios
+        String horaInicio = request.getParameter("hora_inicio");
+        String horaFin = request.getParameter("hora_fin");
 
-        response.sendRedirect("");
+        // Credenciales de Usuario
+        String usuario = request.getParameter("usuario");
+        String pass = request.getParameter("pass");
+
+        Date fechaNac = null;
+        try {
+            if (fechaNacStr != null && !fechaNacStr.isEmpty()) {
+                fechaNac = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacStr);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // Llamada a la controladora lógica con usuario y contraseña
+        medico.crearMedico(dni, nombre, apellido, direccion, telefono, fechaNac, especialidad, horaInicio, horaFin, usuario, pass);
+
+        // Redireccionamos a SvMedicos para listar los médicos actualizados
+        response.sendRedirect("SvMedicos");
     }
 }

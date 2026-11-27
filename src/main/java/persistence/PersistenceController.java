@@ -1,9 +1,11 @@
 package persistence;
 
+import Logica.Horario;
 import Logica.Medico;
 import Logica.Usuario;
 import perisistenceexception.NonexistentEntityException;
 
+import java.util.Date;
 import java.util.List;
 
 public class PersistenceController {
@@ -67,5 +69,19 @@ public class PersistenceController {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void crearMedico(Medico med, Horario horario, Usuario usuario) {
+
+        // 1. Persistimos primero el horario y el usuario
+        horaJPAC.create(horario);
+        usuarioJPAC.create(usuario);
+
+        // 2. Asociamos el horario y el usuario recién guardados al médico
+        med.setHorarioMedico(horario);
+        med.setUsuarioMedico(usuario);
+
+        // 3. Persistimos el médico
+        medicoJPAC.create(med);
     }
 }
