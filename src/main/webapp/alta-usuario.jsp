@@ -19,29 +19,35 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo Médico </h1>
+                                <h1 class="h4 text-gray-900 mb-4 font-weight-bold">
+                                    <i class="fas fa-user-plus text-primary mr-2"></i>Crear nuevo Usuario
+                                </h1>
                             </div>
                             <form action="SvUsuario" method="post" class="user">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user" id="nombre" name="nombre"
-                                            placeholder="Nombre">
+                                            placeholder="Nombre de usuario" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user" id="pass" name="pass"
-                                            placeholder="Contraseña">
+                                            placeholder="Contraseña" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="rol" name="rol"
-                                            placeholder="Rol">
+                                    <div class="col-sm-12">
+                                        <label class="small text-gray-700 font-weight-bold ml-2">Rol del Usuario:</label>
+                                        <select name="rol" id="rol" class="form-control" style="height: 50px; border-radius: 10rem;" required>
+                                            <option value="" disabled selected>-- Selecciona uno de los tres roles permitidos --</option>
+                                            <option value="Admin">Admin (Control total del sistema)</option>
+                                            <option value="Medico">Medico (Consultas y agenda médica)</option>
+                                            <option value="Administrativo">Administrativo (Citas y pacientes)</option>
+                                        </select>
                                     </div>
-
                                 </div>
 
-                                <button type="submit" class="btn btn-primary btn-user btn-block">
-                                    Registrar
+                                <button type="submit" class="btn btn-primary btn-user btn-block mt-4 font-weight-bold">
+                                    <i class="fas fa-check mr-1"></i> Registrar Usuario
                                 </button>
 
                             </form>

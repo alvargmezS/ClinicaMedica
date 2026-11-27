@@ -15,8 +15,10 @@
         <class>Logica.Horario</class>
         <class>Logica.Usuario</class>
         <class>Logica.Cita</class>
+        <class>Logica.InformeMedico</class>
 
         <properties>
+          <!-- Valores por defecto para desarrollo (sobreescribibles dinámicamente en producción vía EntityManagerUtil y variables de entorno DB_URL, DB_USER, DB_PASSWORD) -->
           <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
           <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://192.168.10.100:3306/clinica_medica?serverTimezone=UTC"/>
           <property name="jakarta.persistence.jdbc.user" value="alvaro"/>
@@ -24,8 +26,10 @@
 
           <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
           <property name="hibernate.hbm2ddl.auto" value="update"/>
-          <property name="hibernate.show_sql" value="true"/>
-          <property name="hibernate.format_sql" value="true"/>
+          
+          <!-- Seguridad: Se desactiva la impresión de sentencias SQL en logs para evitar fuga de información médica confidencial -->
+          <property name="hibernate.show_sql" value="false"/>
+          <property name="hibernate.format_sql" value="false"/>
         </properties>
 
     </persistence-unit>

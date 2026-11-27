@@ -1,3 +1,4 @@
+<%@ page import="Logica.SecurityUtils" %>
 <%--
   Created by IntelliJ IDEA.
   User: alvargmez
@@ -6,14 +7,21 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String mensajeError = (String) session.getAttribute("mensajeErrorLogin");
+    if (mensajeError != null) {
+        session.removeAttribute("mensajeErrorLogin");
+    } else {
+        mensajeError = "Usuario o contraseña no válidos.";
+    }
+%>
 <html>
 <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Centro Médico - Inicio de Sesión">
 
     <title>Login Centro Médico</title>
 
@@ -45,26 +53,36 @@
                             <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Login</h1>
+                                        <h1 class="h4 text-gray-900 mb-4 font-weight-bold">
+                                            <i class="fas fa-lock text-danger mr-2"></i>Iniciar Sesión
+                                        </h1>
                                     </div>
                                     <form class="user" action="SvLogin" method="post">
 
-                                        <p class="form-group" style="color: red">Introduce un Usuario y Contraseña válidos</p>
+                                        <div class="alert alert-danger py-2 small shadow-sm mb-3">
+                                            <i class="fas fa-exclamation-circle mr-1"></i>
+                                            <%=SecurityUtils.escapeHtml(mensajeError)%>
+                                        </div>
+
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                id="usuario" name="usuario" aria-describedby="emailHelp"
-                                                placeholder="Usuario">
+                                                id="usuario" name="usuario"
+                                                placeholder="Nombre de Usuario" required autofocus autocomplete="username">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="pass" name="pass" placeholder="Contraseña">
+                                                id="pass" name="pass" placeholder="Contraseña" required autocomplete="current-password">
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                        <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">
+                                            Ingresar
                                         </button>
 
                                     </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small text-muted" href="login.jsp">Volver a intentar</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -76,16 +94,6 @@
         </div>
 
     </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
 
 </body>
 </html>

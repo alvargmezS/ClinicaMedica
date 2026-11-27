@@ -3,4 +3,41 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
          version="6.1">
+
+    <display-name>ClinicaMedica</display-name>
+
+    <!-- Configuración de Sesión y Seguridad de Cookies -->
+    <session-config>
+        <!-- Tiempo de expiración por inactividad: 30 minutos -->
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <!-- Protege la cookie contra robo por scripts (Mitigación XSS) -->
+            <http-only>true</http-only>
+            <name>JSESSIONID</name>
+        </cookie-config>
+        <!-- Deshabilita la inclusión de identificadores de sesión en las URLs -->
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!-- Páginas de Error Personalizadas (Prevención de fuga de información y stack traces) -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error-404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/sin-permiso.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error-500.jsp</location>
+    </error-page>
+
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error-500.jsp</location>
+    </error-page>
+
 </web-app>

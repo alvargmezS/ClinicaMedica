@@ -9,6 +9,7 @@ import java.util.List;
 
 import Logica.Controller;
 import Logica.Medico;
+import Logica.Usuario;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,12 +26,12 @@ public class SvMedicos extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Medico> med = new ArrayList<>();
-
-        med = medico.getMedicos();
+        List<Medico> med = medico.getMedicos();
+        List<Usuario> usuSinMedico = medico.getUsuariosSinMedico();
 
         HttpSession sesion = request.getSession();
         sesion.setAttribute("listaMedicos", med);
+        sesion.setAttribute("usuariosSinMedico", usuSinMedico);
 
         response.sendRedirect("ver-medicos.jsp");
     }
@@ -51,10 +52,6 @@ public class SvMedicos extends HttpServlet {
         String horaInicio = request.getParameter("hora_inicio");
         String horaFin = request.getParameter("hora_fin");
 
-        // Credenciales de Usuario
-        String usuario = request.getParameter("usuario");
-        String pass = request.getParameter("pass");
-
         Date fechaNac = null;
         try {
             if (fechaNacStr != null && !fechaNacStr.isEmpty()) {
@@ -64,8 +61,22 @@ public class SvMedicos extends HttpServlet {
             e.printStackTrace();
         }
 
-        // Llamada a la controladora lógica con usuario y contraseña
-        medico.crearMedico(dni, nombre, apellido, direccion, telefono, fechaNac, especialidad, horaInicio, horaFin, usuario, pass);
+        String idUsuarioExistenteStr = request.getParameter("id_usuario_existente");
+        int idUsuarioExistente = (idUsuarioExistenteStr != null && !idUsuarioExistenteStr.isEmpty()) 
+                ? Integer.parseInt(idUsuarioExistenteStr) : 0;
+
+        String usuario = request.getParameter("usuario");
+        String pass = request.getParameter("pass");
+        String rol = request.getParameter("rol");
+
+        if (idUsuarioExistente > 0) {
+            medico.crearMedicoConUsuarioExistente(dni, nombre, apellido, direccion, telefono, fechaNac, especialidad, horaInicio, horaFin, idUsuarioExistente);
+        } else if (usuario != null && !usuario.trim().isEmpty() && pass != null && !pass.trim().isEmpty()) {
+            medico.crearMedico(dni, nombre, apellido, direccion, telefono, fechaNac, especialidad, horaInicio, horaFin, usuario, pass, rol);
+        } else {
+            // Si no introdujo usuario nuevo ni eligió uno existente, se le crea uno por defecto con su DNI
+            medico.crearMedico(dni, nombre, apellido, direccion, telefono, fechaNac, especialidad, horaInicio, horaFin, dni, dni, "Medico");
+        }
 
         // Redireccionamos a SvMedicos para listar los médicos actualizados
         response.sendRedirect("SvMedicos");

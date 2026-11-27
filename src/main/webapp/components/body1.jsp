@@ -11,6 +11,10 @@
 <%
 HttpSession sesion = request.getSession();
 String usuario = (String) request.getSession().getAttribute("usuario");
+String rol = (String) request.getSession().getAttribute("rol");
+if (rol == null) {
+    rol = "";
+}
 
 if(usuario == null){ 
     response.sendRedirect("login.jsp");
@@ -48,7 +52,26 @@ if(usuario == null){
             <!-- Heading -->
             <div class="sidebar-heading"> Gestión </div>
 
-            <!-- Nav Item - Médico Collapse Menu -->
+            <!-- Nav Item - Citas Médicas Collapse Menu (Todos los roles autenticados) -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCitas"
+                    aria-expanded="true" aria-controls="collapseCitas">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Citas Médicas</span>
+                </a>
+                <div id="collapseCitas" class="collapse" aria-labelledby="headingCitas"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Gestión de Citas</h6>
+                        <a class="collapse-item" href="calendario-citas.jsp">Calendario de Citas</a>
+                        <a class="collapse-item" href="SvCitas">Histórico de Citas</a>
+                        <a class="collapse-item" href="SvNuevaCita">Agendar Cita</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Médico Collapse Menu (Admin y Administrativo) -->
+            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador") || rol.equalsIgnoreCase("Administrativo") || rol.equalsIgnoreCase("Recepcionista")) { %>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMedico"
                     aria-expanded="true" aria-controls="collapseUtilities">
@@ -57,14 +80,15 @@ if(usuario == null){
                 </a>
                 <div id="collapseMedico" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Acciónes</h6>
+                        <h6 class="collapse-header">Acciones</h6>
                         <a class="collapse-item" href="SvMedicos">Ver Doctor/Doctora</a>
                         <a class="collapse-item" href="alta-medico.jsp">Alta Doctor/Doctora</a>
                     </div>
                 </div>
             </li>
+            <% } %>
 
-            <!-- Nav Item - Pacientes Collapse Menu -->
+            <!-- Nav Item - Pacientes Collapse Menu (Todos los roles autenticados) -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePaciente"
                     aria-expanded="true" aria-controls="collapseUtilities">
@@ -74,30 +98,55 @@ if(usuario == null){
                 <div id="collapsePaciente" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Acciónes</h6>
-                        <a class="collapse-item" href="">Ver Pacientes</a>
-                        <a class="collapse-item" href="#">Alta Paciente</a>
+                        <h6 class="collapse-header">Pacientes</h6>
+                        <a class="collapse-item" href="SvPacientes">Ver Pacientes</a>
+                        <a class="collapse-item" href="alta-paciente.jsp">Alta Paciente</a>
+                        <h6 class="collapse-header">Informes Clínicos</h6>
+                        <a class="collapse-item" href="SvInformes">Historial e Informes</a>
+                        <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador") || rol.equalsIgnoreCase("Medico") || rol.equalsIgnoreCase("Doctor")) { %>
+                            <a class="collapse-item" href="SvGenerarInforme">Generar Informe</a>
+                        <% } %>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Usuario Collapse Menu -->
+            <!-- Nav Item - Administrativos Collapse Menu (SOLO Admin) -->
+            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador")) { %>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminPersonal"
+                    aria-expanded="true" aria-controls="collapseAdminPersonal">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Administrativos</span>
+                </a>
+                <div id="collapseAdminPersonal" class="collapse" aria-labelledby="headingAdminPersonal"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Acciones</h6>
+                        <a class="collapse-item" href="SvAdministrativos">Ver Administrativos</a>
+                        <a class="collapse-item" href="alta-administrativo.jsp">Alta Administrativo</a>
+                    </div>
+                </div>
+            </li>
+            <% } %>
+
+            <!-- Nav Item - Usuario Collapse Menu (SOLO Admin) -->
+            <% if (rol.equalsIgnoreCase("Admin") || rol.equalsIgnoreCase("Administrador")) { %>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuario"
                     aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-solid fa-user"></i>
+                    <i class="fas fa-solid fa-users-cog"></i>
                     <span>Usuarios</span>
                 </a>
                 <div id="collapseUsuario" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Acciónes</h6>
+                        <h6 class="collapse-header">Acciones</h6>
                         <a class="collapse-item" href="SvUsuario">Ver Usuarios</a>
                         <a class="collapse-item" href="alta-usuario.jsp">Alta Usuario</a>
                     </div>
                 </div>
             </li>
-
+            <% } %>
 
         </ul>
         <!-- End of Sidebar -->
@@ -125,21 +174,16 @@ if(usuario == null){
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=request.getSession().getAttribute("usuario")%></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <%=usuario%> 
+                                    <span class="badge badge-primary ml-1"><%=rol%></span>
+                                </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Perfil
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Ajustes
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

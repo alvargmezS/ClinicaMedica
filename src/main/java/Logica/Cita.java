@@ -23,11 +23,13 @@ public class Cita {
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
-    public Cita(int id_cita, Date fecha_cita, String hora_cita, String motivo) {
+    public Cita(int id_cita, Date fecha_cita, String hora_cita, String motivo, Medico citaMedico, Paciente paciente) {
         this.id_cita = id_cita;
         this.fecha_cita = fecha_cita;
         this.hora_cita = hora_cita;
         this.motivo = motivo;
+        this.citaMedico = citaMedico;
+        this.paciente = paciente;
     }
 
     public Cita() {
@@ -64,5 +66,21 @@ public class Cita {
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+
+    public Medico getCitaMedico() {
+        return citaMedico;
+    }
+
+    public void setCitaMedico(Medico citaMedico) {
+        this.citaMedico = citaMedico;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 }

@@ -1,11 +1,10 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import Logica.Controller;
+import Logica.LoginAttemptService;
+import Logica.SecurityUtils;
 import Logica.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,8 +21,7 @@ public class SvLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-
+        response.sendRedirect("login.jsp");
     }
 
     @Override
@@ -33,18 +31,46 @@ public class SvLogin extends HttpServlet {
         String usuario = request.getParameter("usuario");
         String pass = request.getParameter("pass");
 
-        boolean valid = false;
-
-        valid = controller.validIngreso(usuario, pass);
-
-        if (valid) {
-
-            HttpSession sesion = request.getSession(true);
-            sesion.setAttribute("usuario", usuario);
-            response.sendRedirect("index.jsp");
-        }else{
+        if (usuario == null || pass == null || usuario.trim().isEmpty() || pass.trim().isEmpty()) {
             response.sendRedirect("login-error.jsp");
+            return;
         }
 
+        usuario = usuario.trim();
+
+        // 1. Control de Tasa / Prevención de Fuerza Bruta
+        if (LoginAttemptService.estaBloqueado(usuario)) {
+            int minutos = LoginAttemptService.getMinutosRestantesBloqueo(usuario);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("mensajeErrorLogin", "Acceso bloqueado por reiterados intentos fallidos. Por favor, espera " + minutos + " minuto(s) antes de reintentar.");
+            response.sendRedirect("login-error.jsp");
+            return;
+        }
+
+        // 2. Verificación de credenciales con BCrypt
+        Usuario usu = controller.obtenerUsuario(usuario, pass);
+
+        if (usu != null) {
+            // Éxito: restablecer intentos fallidos
+            LoginAttemptService.registrarExito(usuario);
+
+            // 3. Mitigación de Session Fixation: Regenerar ID de sesión al autenticar
+            request.changeSessionId();
+
+            HttpSession sesion = request.getSession(true);
+            sesion.setAttribute("usuario", usu.getNombre_usuario());
+            sesion.setAttribute("rol", usu.getRol());
+
+            // 4. Generación inicial de Token anti-CSRF para la sesión autenticada
+            SecurityUtils.obtenerOGenerarTokenCsrf(sesion);
+
+            response.sendRedirect("ver-citas.jsp");
+        } else {
+            // Fallo de autenticación: registrar intento
+            LoginAttemptService.registrarFallo(usuario);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("mensajeErrorLogin", "Usuario o contraseña incorrectos.");
+            response.sendRedirect("login-error.jsp");
+        }
     }
 }
